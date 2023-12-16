@@ -11,42 +11,58 @@ class ViewController: UIViewController {
     @IBOutlet weak var progressBar: UIProgressView!
     
    let questions = [
-           ["Albert Einstein, Nobel Fizik Ödülü'nü kazanmıştır.", "Doğru"],
-            ["Amazon Nehri, dünyanın en uzun nehridir.", "Doğru"],
-            ["Güneş Sistemi'ndeki en büyük gezegen Mars'tır.","Yanlış"],
-            ["'Pulp Fiction', Quentin Tarantino'nun yönettiği bir korku filmidir.","Yanlış"],
-            ["Mona Lisa tablosu, Leonardo da Vinci tarafından yapılmıştır.","Doğru"],
-            [" Renkli görüntüleriyle ünlü olan televizyon, ilk olarak 20. yüzyılın başlarında icat edilmiştir.","Yanlış"]
+            Question(q: "Albert Einstein, Nobel Fizik Ödülü'nü kazanmıştır.", a: "Doğru"),
+            Question(q: "Amazon Nehri, dünyanın en uzun nehridir.", a: "Doğru"),
+            Question(q: "Güneş Sistemi'ndeki en büyük gezegen Mars'tır.", a: "Yanlış"),
+            Question(q: "'Pulp Fiction', Quentin Tarantino'nun yönettiği bir korku filmidir.", a:"Yanlış"),
+            Question(q: "Mona Lisa tablosu, Leonardo da Vinci tarafından yapılmıştır.", a: "Doğru"),
+            Question(q: "Renkli görüntüleriyle ünlü olan televizyon, ilk olarak 20. yüzyılın başlarında icat edilmiştir", a: "Yanlış"),
+            Question(q: "Çİkolata köpeklerin kalbi için zararlıdır.", a:"Doğru"),
+            Question(q: "Bir kağıt 7'den fazla katlanamaz.", a: "Yanlış"),
+            Question(q:"The Matrix filminde, Morpheus'un Neo'ya sunduğu kırmızı hap, gerçek dünyayı görmesini sağlar.", a:"Doğru"),
+            Question(q:"Ay'ın yüzeyi, insanların izlerini yıllarca koruyabilir.",a:"Doğru")
+            
+         
     //["Doğru", "Doğru", "Yanlış","Yanlış", "Doğru","Yanlış"]
     ]
     
     var questionNumber = 0
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        questionText.text = questions[questionNumber][0]
+        questionText.text = questions[questionNumber].answer
         updateUI()
         
     }
 
     @IBAction func pressedAnswerButton(_ sender: UIButton) {
+        timer.invalidate()
+        if(questions[questionNumber].answer == sender.currentTitle ){
+            sender.backgroundColor = UIColor.green
+        }
+        else{
+            sender.backgroundColor = UIColor.red
+                    
+        }
 
         if questions.count-1 > questionNumber{
             questionNumber += 1
         }
-        else {
+        else{
             questionNumber = 0
         }
-      
-        updateUI()
-
-        //if sender.currentTitle ==
-     
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+       
+        //updateUI()
     }
     
-    func updateUI(){
-        questionText.text = questions[questionNumber][0]
+    @objc func updateUI(){
+        questionText.text = questions[questionNumber].text
+        trueButton.backgroundColor = UIColor.clear
+        falseButton.backgroundColor = UIColor.clear
 
     }
     
